@@ -37,12 +37,6 @@ const app = express();
 const port: number = Number(process.env.APP_PORT) || 9852;
 app.set('port', port);
 
-function onListening(server: http.Server): void {
-	const addr = server.address();
-	const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`;
-	logger.info(`Listening on ${bind}`);
-}
-
 async function main() {
 	// Apply middleware
 	app.use(helmet());
@@ -138,13 +132,6 @@ async function main() {
 			__error__: process.env.NODE_ENV === 'development' ? err.stack : undefined,
 		});
 	});
-
-	// Start the server after all configurations are done
-	const server = http.createServer(app);
-	server.listen(port);
-	server.on('listening', () => onListening(server));
-
-	logger.info(`${APP_NAME} server started on port ${port}`);
 }
 
 main();
