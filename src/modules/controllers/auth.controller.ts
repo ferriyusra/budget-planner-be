@@ -91,7 +91,7 @@ class AuthController {
 			const user = await this.authService.activation(code);
 			return response.success(res, user, 'User Successfully Activate');
 		} catch (error) {
-			const err = error as unknown as Error;
+			return error as unknown as Error;
 		}
 	}
 }
