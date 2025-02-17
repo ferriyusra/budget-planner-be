@@ -171,9 +171,10 @@ async function main() {
 }
 
 // Start the application
-main().catch((err) => {
-	logger.error('Failed to start application:', err);
-	process.exit(1);
-});
+// main().catch((err) => {
+// 	logger.error('Failed to start application:', err);
+// 	process.exit(1);
+// });
 
+main();
 export default app;
