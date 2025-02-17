@@ -147,4 +147,5 @@ async function main() {
 	logger.info(`${APP_NAME} server started on port ${port}`);
 }
 
+main();
 export default app;
