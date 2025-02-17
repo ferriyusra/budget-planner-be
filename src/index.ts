@@ -142,7 +142,6 @@ async function main() {
 	// Start the server after all configurations are done
 	const server = http.createServer(app);
 	server.listen(port);
-	server.on('error', onError);
 	server.on('listening', () => onListening(server));
 
 	logger.info(`${APP_NAME} server started on port ${port}`);
