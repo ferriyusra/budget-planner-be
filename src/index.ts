@@ -137,7 +137,10 @@ async function main() {
 	// docs(app);
 
 	app.get('/', (_req: Request, res: Response) => {
-		res.send(`${APP_NAME} ${APP_ENV} v${APP_VERSION}.`);
+		res.status(200).json({
+			message: 'Server is running!',
+			data: `${APP_NAME} ${APP_ENV} v${APP_VERSION}.`,
+		});
 	});
 
 	// Error handling middleware
