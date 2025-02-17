@@ -1,0 +1,100 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"version": "v0.0.1",
+		"title": "Docs API crowdfunding",
+		"description": "Docs API crowdfunding"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:9852/api",
+			"description": "Local server"
+		},
+		{
+			"url": "your development",
+			"description": "Development server"
+		}
+	],
+	"paths": {
+		"/auth/register": {
+			"post": {
+				"tags": ["Auth"],
+				"description": "",
+				"responses": {
+					"default": {
+						"description": ""
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RegisterRequest"
+							}
+						},
+						"application/xml": {
+							"schema": {
+								"$ref": "#/components/schemas/RegisterRequest"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"securitySchemes": {
+			"bearerAuth": {
+				"type": "http",
+				"scheme": "bearer"
+			}
+		},
+		"schemas": {
+			"LoginRequest": {
+				"type": "object",
+				"properties": {
+					"identifier": {
+						"type": "string",
+						"example": "yourname"
+					},
+					"password": {
+						"type": "string",
+						"example": "yourpassword"
+					}
+				},
+				"xml": {
+					"name": "LoginRequest"
+				}
+			},
+			"RegisterRequest": {
+				"type": "object",
+				"properties": {
+					"fullName": {
+						"type": "string",
+						"example": "yourname"
+					},
+					"username": {
+						"type": "string",
+						"example": "yourusername"
+					},
+					"email": {
+						"type": "string",
+						"example": "youremail@mail.com"
+					},
+					"password": {
+						"type": "string",
+						"example": "yourpassword"
+					},
+					"confirmPassword": {
+						"type": "string",
+						"example": "yourConfirmpassword"
+					}
+				},
+				"xml": {
+					"name": "RegisterRequest"
+				}
+			}
+		}
+	}
+}
