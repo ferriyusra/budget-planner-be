@@ -169,10 +169,4 @@ async function main() {
 	logger.info(`${APP_NAME} server started on port ${port}`);
 }
 
-// Start the application
-main().catch((err) => {
-	logger.error('Failed to start application:', err);
-	process.exit(1);
-});
-
 export default app;
