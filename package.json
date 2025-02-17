@@ -5,7 +5,7 @@
 	"main": "index.ts",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "ts-node-dev --respawn --transpile-only src/bin/www.ts",
+		"dev": "nodemon src/index.ts",
 		"docs": "ts-node src/docs/swagger.ts"
 	},
 	"keywords": [],
