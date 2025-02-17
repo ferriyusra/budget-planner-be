@@ -37,6 +37,27 @@ const app = express();
 const port: number = Number(process.env.APP_PORT) || 3000;
 app.set('port', port);
 
+function onError(error: NodeJS.ErrnoException): void {
+	if (error.syscall !== 'listen') {
+		throw error;
+	}
+	const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+
+	// handle specific listen errors with friendly messages
+	switch (error.code) {
+		case 'EACCES':
+			logger.error(bind + ' requires elevated privileges');
+			process.exit(1);
+			break;
+		case 'EADDRINUSE':
+			logger.error(bind + ' is already in use');
+			process.exit(1);
+			break;
+		default:
+			throw error;
+	}
+}
+
 function onListening(server: http.Server): void {
 	const addr = server.address();
 	const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`;
@@ -142,9 +163,16 @@ async function main() {
 	// Start the server after all configurations are done
 	const server = http.createServer(app);
 	server.listen(port);
+	server.on('error', onError);
 	server.on('listening', () => onListening(server));
 
 	logger.info(`${APP_NAME} server started on port ${port}`);
 }
 
-main();
+// Start the application
+main().catch((err) => {
+	logger.error('Failed to start application:', err);
+	process.exit(1);
+});
+
+export default app;
