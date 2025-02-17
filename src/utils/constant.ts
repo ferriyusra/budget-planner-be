@@ -1,4 +1,5 @@
 export enum ROLES {
 	ADMIN = 'admin',
-	MEMBER = 'member',
+	DONORS = 'donors',
+	CAMPAIGN_CREATORS = 'campaign_creators',
 }

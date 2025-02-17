@@ -8,6 +8,9 @@ import CategoryController from './controllers/category.controller';
 import { MediaController } from './controllers/media.controller';
 import { MediaService } from './media/media.service';
 import { CloudinaryUploader } from '../utils/uploader';
+import CampaignRepository from './campaign/repository';
+import CampaignService from './campaign/service';
+import CampaignController from './controllers/campaign.controller';
 
 function createAuthRepository(db: Connection): AuthRepository {
 	return new AuthRepository(db);
@@ -45,6 +48,22 @@ function createMediaController(mediaService: MediaService): MediaController {
 	return new MediaController(mediaService);
 }
 
+function createCampaignRepository(db: Connection): CampaignRepository {
+	return new CampaignRepository(db);
+}
+
+function createCampaignService(
+	repository: CampaignRepository
+): CampaignService {
+	return new CampaignService(repository);
+}
+
+function createCampaignController(
+	campaignService: CampaignService
+): CampaignController {
+	return new CampaignController(campaignService);
+}
+
 export {
 	createAuthRepository,
 	createAuthService,
@@ -52,6 +71,9 @@ export {
 	createCategoryRepository,
 	createCategoryService,
 	createCategoryController,
+	createCampaignRepository,
+	createCampaignService,
+	createCampaignController,
 	createMediaService,
 	createMediaController,
 };

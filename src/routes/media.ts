@@ -19,7 +19,10 @@ export class MediaRouter {
 	private initializeRoutes(): void {
 		this.router.post(
 			'/media/upload-single',
-			[authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])],
+			[
+				authMiddleware,
+				aclMiddleware([ROLES.ADMIN, ROLES.DONORS, ROLES.CAMPAIGN_CREATORS]),
+			],
 			mediaMiddleware.single('file'),
 			(req: IReqUser, res: Response, _next: NextFunction) =>
 				this.mediaController.single(req, res)
@@ -27,7 +30,10 @@ export class MediaRouter {
 
 		this.router.post(
 			'/media/upload-multiple',
-			[authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])],
+			[
+				authMiddleware,
+				aclMiddleware([ROLES.ADMIN, ROLES.DONORS, ROLES.CAMPAIGN_CREATORS]),
+			],
 			mediaMiddleware.single('files'),
 			(req: IReqUser, res: Response, _next: NextFunction) =>
 				this.mediaController.multiple(req, res)
@@ -35,7 +41,10 @@ export class MediaRouter {
 
 		this.router.delete(
 			'/media/remove',
-			[authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])],
+			[
+				authMiddleware,
+				aclMiddleware([ROLES.ADMIN, ROLES.DONORS, ROLES.CAMPAIGN_CREATORS]),
+			],
 			(req: IReqUser, res: Response, _next: NextFunction) =>
 				this.mediaController.remove(req, res)
 		);
