@@ -35,7 +35,7 @@ export class CategoryRouter {
 			*/
 		);
 		this.router.get(
-			'/categories',
+			'/category',
 			(req: IReqUser, res: Response, _next: NextFunction) =>
 				this.categoryController.findAll(req, res)
 		);
