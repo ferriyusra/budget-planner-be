@@ -59,9 +59,10 @@ function createCampaignService(
 }
 
 function createCampaignController(
-	campaignService: CampaignService
+	campaignService: CampaignService,
+	mediaService: MediaService
 ): CampaignController {
-	return new CampaignController(campaignService);
+	return new CampaignController(campaignService, mediaService);
 }
 
 export {

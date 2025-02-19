@@ -100,7 +100,10 @@ async function main() {
 
 	const authController = createAuthController(authService);
 	const categoryController = createCategoryController(categoryService);
-	const campaignController = createCampaignController(campaignService);
+	const campaignController = createCampaignController(
+		campaignService,
+		mediaService
+	);
 	const mediaController = createMediaController(mediaService);
 
 	// Initialize routes

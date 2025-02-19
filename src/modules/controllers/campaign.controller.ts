@@ -4,9 +4,13 @@ import { IPaginationQuery, IReqUser } from '../../utils/interfaces';
 import { FilterQuery, isValidObjectId } from 'mongoose';
 import CampaignService from '../campaign/service';
 import { campaignDTO, TypeCampaign } from '../campaign/models/campaign.model';
+import { MediaService } from '../media/media.service';
 
 class CampaignController {
-	constructor(private readonly campaignService: CampaignService) {}
+	constructor(
+		private readonly campaignService: CampaignService,
+		private readonly mediaService: MediaService
+	) {}
 
 	async create(req: IReqUser, res: Response) {
 		try {
@@ -112,6 +116,8 @@ class CampaignController {
 			if (!result) {
 				return response.notfound(res, 'campaign not found');
 			}
+
+			await this.mediaService.remove(result.image);
 
 			return response.success(res, result, 'Success remove campaign');
 		} catch (error) {
