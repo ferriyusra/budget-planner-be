@@ -1,5 +1,6 @@
 import { Connection, Model } from 'mongoose';
 import CampaignModel, { Campaign } from './models/campaign.model';
+import { ICampaign } from './interface';
 
 class CampaignRepository {
 	private readonly campaignModel: Model<Campaign>;
@@ -8,7 +9,7 @@ class CampaignRepository {
 		this.campaignModel = db.model<Campaign>('Campaign', CampaignModel.schema);
 	}
 
-	async create(data: any) {
+	async create(data: ICampaign) {
 		return this.campaignModel.create(data);
 	}
 
@@ -32,10 +33,17 @@ class CampaignRepository {
 		return this.campaignModel.countDocuments(query);
 	}
 
-	async update(id: string, data: any) {
-		const updated = await this.campaignModel.findByIdAndUpdate(id, data, {
-			new: true,
-		});
+	async update(id: string, data: ICampaign) {
+		const updated = await this.campaignModel.findByIdAndUpdate(
+			id,
+			{
+				...data,
+				updatedAt: new Date(),
+			},
+			{
+				new: true,
+			}
+		);
 		return updated;
 	}
 

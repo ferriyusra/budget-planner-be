@@ -1,14 +1,15 @@
 import { IReqUser } from '../../utils/interfaces';
+import { ICampaign } from './interface';
 import CampaignRepository from './repository';
 
 class CampaignService {
 	constructor(private readonly campaignRepository: CampaignRepository) {}
 
-	async create(data: any) {
+	async create(data: ICampaign) {
 		return this.campaignRepository.create(data);
 	}
 
-	async update(id: string, data: any) {
+	async update(id: string, data: ICampaign) {
 		return this.campaignRepository.update(id, data);
 	}
 

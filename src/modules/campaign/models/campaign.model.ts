@@ -19,9 +19,18 @@ export const campaignDTO = Yup.object({
 
 export type TypeCampaign = Yup.InferType<typeof campaignDTO>;
 
-export interface Campaign extends Omit<TypeCampaign, 'category' | 'createdBy'> {
+export enum CampaignStatus {
+	PENDING = 'pending',
+	REVIEW = 'review',
+	APPROVED = 'approved',
+	REJECTED = 'rejected',
+}
+
+export interface Campaign
+	extends Omit<TypeCampaign, 'category' | 'createdBy' | 'status'> {
 	category: ObjectId;
 	createdBy: ObjectId;
+	status: string;
 }
 
 const CampaignSchema = new Schema<Campaign>(
@@ -58,6 +67,16 @@ const CampaignSchema = new Schema<Campaign>(
 			type: Schema.Types.ObjectId,
 			ref: 'Category',
 			required: true,
+		},
+		status: {
+			type: Schema.Types.String,
+			enum: [
+				CampaignStatus.PENDING,
+				CampaignStatus.REVIEW,
+				CampaignStatus.APPROVED,
+				CampaignStatus.REJECTED,
+			],
+			default: CampaignStatus.PENDING,
 		},
 		createdBy: {
 			type: Schema.Types.ObjectId,
