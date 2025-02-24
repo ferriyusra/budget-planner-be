@@ -17,20 +17,26 @@ export const campaignDTO = Yup.object({
 	updatedAt: Yup.string(),
 });
 
+export const CAMPAIGN_MODEL_NAME = 'Campaign';
+
 export type TypeCampaign = Yup.InferType<typeof campaignDTO>;
 
 export enum CampaignStatus {
 	PENDING = 'pending',
-	REVIEW = 'review',
 	APPROVED = 'approved',
 	REJECTED = 'rejected',
+	COMPLETED = 'completed',
 }
 
 export interface Campaign
-	extends Omit<TypeCampaign, 'category' | 'createdBy' | 'status'> {
+	extends Omit<
+		TypeCampaign,
+		'category' | 'createdBy' | 'status' | 'progressValue'
+	> {
 	category: ObjectId;
 	createdBy: ObjectId;
 	status: string;
+	progressValue: number;
 }
 
 const CampaignSchema = new Schema<Campaign>(
@@ -59,6 +65,10 @@ const CampaignSchema = new Schema<Campaign>(
 			type: Schema.Types.Number,
 			default: 0,
 		},
+		progressValue: {
+			type: Schema.Types.Number,
+			default: 0,
+		},
 		deadline: {
 			type: Schema.Types.String,
 			required: true,
@@ -72,7 +82,6 @@ const CampaignSchema = new Schema<Campaign>(
 			type: Schema.Types.String,
 			enum: [
 				CampaignStatus.PENDING,
-				CampaignStatus.REVIEW,
 				CampaignStatus.APPROVED,
 				CampaignStatus.REJECTED,
 			],
@@ -96,6 +105,6 @@ CampaignSchema.pre('save', function () {
 	}
 });
 
-const CampaignModel = mongoose.model('Campaign', CampaignSchema);
+const CampaignModel = mongoose.model(CAMPAIGN_MODEL_NAME, CampaignSchema);
 
 export default CampaignModel;

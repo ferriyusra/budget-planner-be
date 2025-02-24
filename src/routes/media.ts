@@ -21,7 +21,7 @@ export class MediaRouter {
 			'/media/upload-single',
 			[
 				authMiddleware,
-				aclMiddleware([ROLES.ADMIN, ROLES.DONORS, ROLES.CAMPAIGN_CREATORS]),
+				aclMiddleware([ROLES.ADMIN, ROLES.DONORS, ROLES.FUNDRAISER]),
 			],
 			mediaMiddleware.single('file'),
 			(req: IReqUser, res: Response, _next: NextFunction) =>
@@ -32,7 +32,7 @@ export class MediaRouter {
 			'/media/upload-multiple',
 			[
 				authMiddleware,
-				aclMiddleware([ROLES.ADMIN, ROLES.DONORS, ROLES.CAMPAIGN_CREATORS]),
+				aclMiddleware([ROLES.ADMIN, ROLES.DONORS, ROLES.FUNDRAISER]),
 			],
 			mediaMiddleware.single('files'),
 			(req: IReqUser, res: Response, _next: NextFunction) =>
@@ -43,7 +43,7 @@ export class MediaRouter {
 			'/media/remove',
 			[
 				authMiddleware,
-				aclMiddleware([ROLES.ADMIN, ROLES.DONORS, ROLES.CAMPAIGN_CREATORS]),
+				aclMiddleware([ROLES.ADMIN, ROLES.DONORS, ROLES.FUNDRAISER]),
 			],
 			(req: IReqUser, res: Response, _next: NextFunction) =>
 				this.mediaController.remove(req, res)

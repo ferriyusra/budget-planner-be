@@ -53,6 +53,10 @@ class CampaignRepository {
 		});
 		return affectedRow;
 	}
+
+	async findBySlug(slug: string) {
+		return this.campaignModel.findOne({ slug });
+	}
 }
 
 export default CampaignRepository;

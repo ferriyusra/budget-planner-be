@@ -26,9 +26,18 @@ class CampaignService {
 		return data;
 	}
 
+	async findAllByCampaign(query: object, limit: number, page: number) {
+		const data = await this.campaignRepository.findAll(query, limit, page);
+		return data;
+	}
+
 	async count(query: object) {
 		const count = await this.campaignRepository.count(query);
 		return count;
+	}
+
+	async findBySlug(slug: string) {
+		return this.campaignRepository.findBySlug(slug);
 	}
 }
 

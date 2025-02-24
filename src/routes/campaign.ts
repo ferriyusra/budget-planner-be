@@ -18,7 +18,7 @@ export class CampaignRouter {
 	private initializeRoutes(): void {
 		this.router.post(
 			'/campaign',
-			[authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.CAMPAIGN_CREATORS])],
+			[authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.FUNDRAISER])],
 			(req: IReqUser, res: Response, _next: NextFunction) =>
 				this.campaignController.create(req, res)
 		);
@@ -34,13 +34,13 @@ export class CampaignRouter {
 		);
 		this.router.put(
 			'/campaign/:id',
-			[authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.CAMPAIGN_CREATORS])],
+			[authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.FUNDRAISER])],
 			(req: IReqUser, res: Response, _next: NextFunction) =>
 				this.campaignController.update(req, res)
 		);
 		this.router.delete(
 			'/campaign/:id',
-			[authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.CAMPAIGN_CREATORS])],
+			[authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.FUNDRAISER])],
 			(req: IReqUser, res: Response, _next: NextFunction) =>
 				this.campaignController.remove(req, res)
 		);

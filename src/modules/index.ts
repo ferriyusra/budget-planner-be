@@ -11,6 +11,9 @@ import { CloudinaryUploader } from '../utils/uploader';
 import CampaignRepository from './campaign/repository';
 import CampaignService from './campaign/service';
 import CampaignController from './controllers/campaign.controller';
+import DonationRepository from './donation/repository';
+import DonationService from './donation/service';
+import DonationController from './controllers/donation.controller';
 
 function createAuthRepository(db: Connection): AuthRepository {
 	return new AuthRepository(db);
@@ -65,6 +68,23 @@ function createCampaignController(
 	return new CampaignController(campaignService, mediaService);
 }
 
+function createDonationRepository(db: Connection): DonationRepository {
+	return new DonationRepository(db);
+}
+
+function createDonationService(
+	repository: DonationRepository
+): DonationService {
+	return new DonationService(repository);
+}
+
+function createDonationController(
+	donationService: DonationService,
+	campaignService: CampaignService
+): DonationController {
+	return new DonationController(donationService, campaignService);
+}
+
 export {
 	createAuthRepository,
 	createAuthService,
@@ -77,4 +97,7 @@ export {
 	createCampaignController,
 	createMediaService,
 	createMediaController,
+	createDonationRepository,
+	createDonationService,
+	createDonationController,
 };

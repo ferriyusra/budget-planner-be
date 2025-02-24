@@ -1,6 +1,5 @@
 import { Connection, Model } from 'mongoose';
 import CategoryModel, { Category } from './models/category.model';
-import { IReqUser } from '../../utils/interfaces';
 
 class CategoryRepository {
 	private readonly categoryModel: Model<Category>;

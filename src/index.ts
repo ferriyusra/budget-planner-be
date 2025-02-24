@@ -19,6 +19,9 @@ import {
 	createCategoryController,
 	createCategoryRepository,
 	createCategoryService,
+	createDonationController,
+	createDonationRepository,
+	createDonationService,
 	createMediaController,
 	createMediaService,
 } from './modules';
@@ -26,6 +29,7 @@ import authRouter from './routes/auth';
 import categoryRouter from './routes/category';
 import mediaRouter from './routes/media';
 import campaignRouter from './routes/campaign';
+import donationRouter from './routes/donation';
 import { CloudinaryUploader } from './utils/uploader';
 import http from 'http';
 
@@ -92,10 +96,13 @@ async function main() {
 	const authRepository = createAuthRepository(db);
 	const categoryRepository = createCategoryRepository(db);
 	const campaignRepository = createCampaignRepository(db);
+	const donationRepository = createDonationRepository(db);
 
 	const authService = createAuthService(authRepository);
 	const categoryService = createCategoryService(categoryRepository);
 	const campaignService = createCampaignService(campaignRepository);
+	const donationService = createDonationService(donationRepository);
+
 	const mediaService = createMediaService(new CloudinaryUploader());
 
 	const authController = createAuthController(authService);
@@ -103,6 +110,10 @@ async function main() {
 	const campaignController = createCampaignController(
 		campaignService,
 		mediaService
+	);
+	const donationController = createDonationController(
+		donationService,
+		campaignService
 	);
 	const mediaController = createMediaController(mediaService);
 
@@ -112,6 +123,7 @@ async function main() {
 	app.use('/api', categoryRouter(categoryController));
 	app.use('/api', campaignRouter(campaignController));
 	app.use('/api', mediaRouter(mediaController));
+	app.use('/api', donationRouter(donationController));
 
 	// Initialize API documentation
 	// Uncomment the line below to enable API documentation
