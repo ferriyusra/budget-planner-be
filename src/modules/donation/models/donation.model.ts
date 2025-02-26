@@ -39,6 +39,12 @@ const DonationSchema = new Schema<Donation>(
 		donationId: {
 			type: Schema.Types.String,
 		},
+		name: {
+			type: Schema.Types.String,
+		},
+		message: {
+			type: Schema.Types.String,
+		},
 		// createdBy: {
 		// 	type: Schema.Types.ObjectId,
 		// 	ref: USER_MODEL_NAME,

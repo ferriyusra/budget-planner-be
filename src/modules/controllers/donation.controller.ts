@@ -22,14 +22,14 @@ class DonationController {
 
 	async create(req: IReqUser, res: Response) {
 		try {
-			const { campaigSlug } = req.params;
+			const { campaignSlug } = req.params;
 			const payload = {
 				...req.body,
 			} as TypeDonation;
 
 			await donationDTO.validate(payload);
 
-			const campaign = await this.campaignService.findBySlug(campaigSlug);
+			const campaign = await this.campaignService.findBySlug(campaignSlug);
 			if (!campaign) {
 				return response.notfound(res, 'campaign not found');
 			}
@@ -43,11 +43,11 @@ class DonationController {
 
 	async findAllDonationByCampaign(req: IReqUser, res: Response) {
 		try {
-			const { campaigSlug } = req.params;
+			const { campaignId } = req.params;
 
 			const buildQuery = (filter: any) => {
 				let query: FilterQuery<TypeCampaign> = {
-					campaigSlug,
+					campaigns: campaignId,
 				};
 
 				if (filter.amount) {
@@ -78,10 +78,10 @@ class DonationController {
 					total: count,
 					totalPages: Math.ceil(count / +limit),
 				},
-				'success find all campaigns'
+				'success find all donations'
 			);
 		} catch (error) {
-			response.error(res, error, 'failed to find all campaigns');
+			response.error(res, error, 'failed to find all donations');
 		}
 	}
 
@@ -116,15 +116,17 @@ class DonationController {
 				return response.notfound(res, 'campaign and donation not found');
 			}
 
+			const newCollectedAmount =
+				Number(campaign.collectedAmount) + Number(donation.amount);
+
+			const progressValue =
+				(newCollectedAmount / Number(campaign.targetAmount)) * 100;
+
 			await CampaignModel.updateOne(
+				{ _id: campaign._id },
 				{
-					_id: campaign._id,
-				},
-				{
-					collectedAmount:
-						Number(campaign.collectedAmount) + Number(donation.amount),
-					progressValue:
-						(Number(campaign.collectedAmount) / Number(donation.amount)) * 100,
+					collectedAmount: newCollectedAmount,
+					progressValue: progressValue,
 				}
 			);
 

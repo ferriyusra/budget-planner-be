@@ -3,7 +3,11 @@ import { Response } from 'express';
 import { IPaginationQuery, IReqUser } from '../../utils/interfaces';
 import { FilterQuery, isValidObjectId } from 'mongoose';
 import CampaignService from '../campaign/service';
-import { campaignDTO, TypeCampaign } from '../campaign/models/campaign.model';
+import {
+	campaignDTO,
+	CampaignStatus,
+	TypeCampaign,
+} from '../campaign/models/campaign.model';
 import { MediaService } from '../media/media.service';
 
 class CampaignController {
@@ -122,6 +126,86 @@ class CampaignController {
 			return response.success(res, result, 'Success remove campaign');
 		} catch (error) {
 			return response.error(res, error, 'Failed remove campaign');
+		}
+	}
+
+	async findAllByStatusApproved(req: IReqUser, res: Response) {
+		try {
+			const buildQuery = (filter: any) => {
+				let query: FilterQuery<TypeCampaign> = {
+					status: CampaignStatus.APPROVED,
+				};
+
+				if (filter.search) {
+					query.$text = {
+						$search: filter.search,
+					};
+				}
+
+				if (filter.category) {
+					query.category = filter.category;
+				}
+
+				return query;
+			};
+
+			const { limit = 10, page = 1, search, category } = req.query;
+
+			const query = buildQuery({
+				search,
+				category,
+			});
+
+			const result = await this.campaignService.findAll(query, +limit, +page);
+
+			const count = await this.campaignService.count(query);
+
+			return response.pagination(
+				res,
+				result,
+				{
+					total: count,
+					totalPages: Math.ceil(+count / +limit),
+					current: +page,
+				},
+				'Success find all campaign'
+			);
+		} catch (error) {
+			return response.error(res, error, 'Failed find all campaign');
+		}
+	}
+
+	async findOneByStatusApproved(req: IReqUser, res: Response) {
+		try {
+			const { id } = req.params;
+			if (!isValidObjectId(id)) {
+				return response.notfound(res, 'campaign not found');
+			}
+
+			const result = await this.campaignService.findByIdAndStatusApproved(id);
+
+			if (!result) {
+				return response.notfound(res, 'campaign not found');
+			}
+
+			return response.success(res, result, 'Success find one campaign');
+		} catch (error) {
+			return response.error(res, error, 'Failed find one campaign');
+		}
+	}
+
+	async findOneBySlug(req: IReqUser, res: Response) {
+		try {
+			const { campaignSlug } = req.params;
+
+			const result = await this.campaignService.findBySlug(campaignSlug);
+			if (!result) {
+				response.notfound(res, 'campaign not found');
+			}
+
+			response.success(res, result, 'success find one by slug campaign');
+		} catch (error) {
+			response.error(res, error, 'failed find one by slug campaign');
 		}
 	}
 }

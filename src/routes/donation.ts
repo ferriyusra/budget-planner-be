@@ -17,7 +17,7 @@ export class DonationRouter {
 
 	private initializeRoutes(): void {
 		this.router.post(
-			'/donation/:campaigSlug',
+			'/donation/:campaignSlug',
 			(req: IReqUser, res: Response, _next: NextFunction) =>
 				this.donationController.create(req, res)
 		);
@@ -27,7 +27,7 @@ export class DonationRouter {
 				this.donationController.complete(req, res)
 		);
 		this.router.get(
-			'/donation',
+			'/donation-history/:campaignId',
 			(req: IReqUser, res: Response, _next: NextFunction) =>
 				this.donationController.findAllDonationByCampaign(req, res)
 		);

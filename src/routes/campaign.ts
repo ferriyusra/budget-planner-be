@@ -32,6 +32,21 @@ export class CampaignRouter {
 			(req: IReqUser, res: Response, _next: NextFunction) =>
 				this.campaignController.findOne(req, res)
 		);
+		this.router.get(
+			'/campaign-approved',
+			(req: IReqUser, res: Response, _next: NextFunction) =>
+				this.campaignController.findAllByStatusApproved(req, res)
+		);
+		this.router.get(
+			'/campaign-approved/:id',
+			(req: IReqUser, res: Response, _next: NextFunction) =>
+				this.campaignController.findOneByStatusApproved(req, res)
+		);
+		this.router.get(
+			'/campaign/:campaignSlug/slug',
+			(req: IReqUser, res: Response, _next: NextFunction) =>
+				this.campaignController.findOneBySlug(req, res)
+		);
 		this.router.put(
 			'/campaign/:id',
 			[authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.FUNDRAISER])],

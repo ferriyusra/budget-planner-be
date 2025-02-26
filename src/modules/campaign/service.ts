@@ -21,6 +21,10 @@ class CampaignService {
 		return this.campaignRepository.findById(id);
 	}
 
+	async findByIdAndStatusApproved(id: string) {
+		return this.campaignRepository.findByIdAndStatusApproved(id);
+	}
+
 	async findAll(query: object, limit: number, page: number) {
 		const data = await this.campaignRepository.findAll(query, limit, page);
 		return data;

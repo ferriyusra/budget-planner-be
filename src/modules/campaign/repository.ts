@@ -1,5 +1,8 @@
 import { Connection, Model } from 'mongoose';
-import CampaignModel, { Campaign } from './models/campaign.model';
+import CampaignModel, {
+	Campaign,
+	CampaignStatus,
+} from './models/campaign.model';
 import { ICampaign } from './interface';
 
 class CampaignRepository {
@@ -15,6 +18,13 @@ class CampaignRepository {
 
 	async findById(id: string) {
 		return this.campaignModel.findById(id);
+	}
+
+	async findByIdAndStatusApproved(id: string) {
+		return this.campaignModel.findOne({
+			_id: id,
+			status: CampaignStatus.APPROVED,
+		});
 	}
 
 	async findAll(query: object, limit: number, page: number) {
@@ -55,7 +65,10 @@ class CampaignRepository {
 	}
 
 	async findBySlug(slug: string) {
-		return this.campaignModel.findOne({ slug });
+		return this.campaignModel.findOne({
+			slug,
+			status: CampaignStatus.APPROVED,
+		});
 	}
 }
 

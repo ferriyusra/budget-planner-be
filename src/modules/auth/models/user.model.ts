@@ -131,7 +131,6 @@ UserSchema.post('save', async function (doc, next) {
 			html: contentMail,
 		});
 	} catch (error) {
-		console.log(error);
 	} finally {
 		next();
 	}
