@@ -25,11 +25,8 @@ import {
 	createMediaController,
 	createMediaService,
 } from './modules';
-import authRouter from './routes/auth';
-import categoryRouter from './routes/category';
-import mediaRouter from './routes/media';
-import campaignRouter from './routes/campaign';
-import donationRouter from './routes/donation';
+
+import apiRouter from './routes/api';
 import { CloudinaryUploader } from './utils/uploader';
 import http from 'http';
 
@@ -119,11 +116,16 @@ async function main() {
 
 	// Initialize routes
 	logger.info('Initializing routes');
-	app.use('/api', authRouter(authController));
-	app.use('/api', categoryRouter(categoryController));
-	app.use('/api', campaignRouter(campaignController));
-	app.use('/api', mediaRouter(mediaController));
-	app.use('/api', donationRouter(donationController));
+	app.use(
+		'/api',
+		apiRouter(
+			authController,
+			categoryController,
+			campaignController,
+			donationController,
+			mediaController
+		)
+	);
 
 	// Initialize API documentation
 	// Uncomment the line below to enable API documentation
