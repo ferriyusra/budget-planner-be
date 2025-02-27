@@ -95,7 +95,7 @@ const UserSchema = new Schema<User>(
 		},
 		isActive: {
 			type: Schema.Types.Boolean,
-			default: false,
+			default: true,
 		},
 		activationCode: {
 			type: Schema.Types.String,
@@ -113,28 +113,29 @@ UserSchema.pre('save', function (next) {
 	next();
 });
 
-UserSchema.post('save', async function (doc, next) {
-	try {
-		const user = doc;
-		const contentMail = await renderMailHtml('registration-success.ejs', {
-			username: user.username,
-			fullName: user.fullName,
-			email: user.email,
-			createdAt: user.createdAt,
-			activationLink: `${CLIENT_HOST}/auth/activation?code=${user.activationCode}`,
-		});
+// disabled send email because issue in pricing and limited in free tier
+// UserSchema.post('save', async function (doc, next) {
+// 	try {
+// 		const user = doc;
+// 		const contentMail = await renderMailHtml('registration-success.ejs', {
+// 			username: user.username,
+// 			fullName: user.fullName,
+// 			email: user.email,
+// 			createdAt: user.createdAt,
+// 			activationLink: `${CLIENT_HOST}/auth/activation?code=${user.activationCode}`,
+// 		});
 
-		await sendMail({
-			from: EMAIL_SMTP_USER,
-			to: user.email,
-			subject: 'Aktivasi Akun Anda',
-			html: contentMail,
-		});
-	} catch (error) {
-	} finally {
-		next();
-	}
-});
+// 		await sendMail({
+// 			from: EMAIL_SMTP_USER,
+// 			to: user.email,
+// 			subject: 'Aktivasi Akun Anda',
+// 			html: contentMail,
+// 		});
+// 	} catch (error) {
+// 	} finally {
+// 		next();
+// 	}
+// });
 
 UserSchema.methods.toJSON = function () {
 	const user = this.toObject();
