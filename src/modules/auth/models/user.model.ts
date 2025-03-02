@@ -86,8 +86,8 @@ const UserSchema = new Schema<User>(
 		},
 		role: {
 			type: Schema.Types.String,
-			enum: [ROLES.ADMIN, ROLES.DONORS, ROLES.FUNDRAISER],
-			default: ROLES.DONORS,
+			enum: [ROLES.ADMIN, ROLES.FUNDRAISER],
+			default: ROLES.FUNDRAISER,
 		},
 		profilePicture: {
 			type: Schema.Types.String,

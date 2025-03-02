@@ -184,10 +184,7 @@ export class ApiRouter {
 		// Media Route
 		this.router.post(
 			'/media/upload-single',
-			[
-				authMiddleware,
-				aclMiddleware([ROLES.ADMIN, ROLES.DONORS, ROLES.FUNDRAISER]),
-			],
+			[authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.FUNDRAISER])],
 			mediaMiddleware.single('file'),
 			(req: IReqUser, res: Response, _next: NextFunction) =>
 				this.mediaController.single(req, res)
@@ -195,10 +192,7 @@ export class ApiRouter {
 
 		this.router.post(
 			'/media/upload-multiple',
-			[
-				authMiddleware,
-				aclMiddleware([ROLES.ADMIN, ROLES.DONORS, ROLES.FUNDRAISER]),
-			],
+			[authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.FUNDRAISER])],
 			mediaMiddleware.single('files'),
 			(req: IReqUser, res: Response, _next: NextFunction) =>
 				this.mediaController.multiple(req, res)
@@ -206,10 +200,7 @@ export class ApiRouter {
 
 		this.router.delete(
 			'/media/remove',
-			[
-				authMiddleware,
-				aclMiddleware([ROLES.ADMIN, ROLES.DONORS, ROLES.FUNDRAISER]),
-			],
+			[authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.FUNDRAISER])],
 			(req: IReqUser, res: Response, _next: NextFunction) =>
 				this.mediaController.remove(req, res)
 		);
