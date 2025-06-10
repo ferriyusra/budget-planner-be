@@ -60,28 +60,28 @@ export class ApiRouter {
 		);
 
 		this.router.post(
-			'/simulation',
+			'/simulation-kpr',
 			[authMiddleware, aclMiddleware([ROLES.USER, ROLES.ADMIN])],
 			(req: Request, res: Response, _next: NextFunction) =>
 				this.simulationKprController.create(req, res)
 		);
 
 		this.router.get(
-			'/simulation',
+			'/simulation-kpr',
 			[authMiddleware, aclMiddleware([ROLES.USER, ROLES.ADMIN])],
 			(req: Request, res: Response, _next: NextFunction) =>
 				this.simulationKprController.findAll(req, res)
 		);
 
 		this.router.get(
-			'/simulation/:id',
+			'/simulation-kpr/:id',
 			[authMiddleware, aclMiddleware([ROLES.USER, ROLES.ADMIN])],
 			(req: Request, res: Response, _next: NextFunction) =>
 				this.simulationKprController.findById(req, res)
 		);
 
 		this.router.get(
-			'/simulation/:id/download',
+			'/simulation-kpr/:id/download',
 			[authMiddleware, aclMiddleware([ROLES.USER, ROLES.ADMIN])],
 			(req: Request, res: Response, _next: NextFunction) =>
 				this.simulationKprController.downloadExcel(req, res)
