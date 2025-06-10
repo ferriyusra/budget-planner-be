@@ -1,10 +1,9 @@
-import { IReqUser } from '../../utils/interfaces';
 import { calculateAmortizationSchedule } from '../../utils/kpr.helper';
 import { SimulationType } from './models/simulation.model';
-import SimulationRepository from './repository';
+import SimulationKprRepository from './repository';
 import * as XLSX from 'xlsx';
 
-interface ISimulation {
+interface ISimulationKpr {
 	_id: string;
 	userId: string;
 	simulationType: SimulationType;
@@ -19,16 +18,16 @@ interface ISimulation {
 	}>;
 }
 
-class SimulationService {
-	constructor(private readonly simulationRepository: SimulationRepository) {}
+class SimulationKprService {
+	private readonly simulationRepository: SimulationKprRepository;
+
+	constructor(simulationRepository: SimulationKprRepository) {
+		this.simulationRepository = simulationRepository;
+	}
 
 	async create({ data, userId }: { data: any; userId: string }) {
-		const { simulationType } = data;
-
-		if (simulationType === SimulationType.KPR) {
-			const result = calculateAmortizationSchedule(data);
-			data.data = result;
-		}
+		const result = calculateAmortizationSchedule(data);
+		data.data = result;
 
 		return this.simulationRepository.create(data, userId);
 	}
@@ -58,7 +57,7 @@ class SimulationService {
 		const simulation = (await this.findById(
 			simulationId,
 			userId
-		)) as unknown as ISimulation;
+		)) as unknown as ISimulationKpr;
 
 		if (!simulation) {
 			throw new Error('Simulation not found');
@@ -118,4 +117,4 @@ class SimulationService {
 	}
 }
 
-export default SimulationService;
+export default SimulationKprService;

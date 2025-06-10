@@ -2,9 +2,9 @@ import { Connection } from 'mongoose';
 import AuthRepository from './auth/repository';
 import AuthService from './auth/service';
 import AuthController from './controllers/auth.controller';
-import SimulationRepository from './simulation/repository';
-import SimulationService from './simulation/service';
-import SimulationController from './controllers/simulation.controller';
+import SimulationKprRepository from './simulation_kpr/repository';
+import SimulationKprService from './simulation_kpr/service';
+import SimulationKprController from './controllers/simulation_kpr.controller';
 
 function createAuthRepository(db: Connection): AuthRepository {
 	return new AuthRepository(db);
@@ -18,32 +18,34 @@ function createAuthController(authService: AuthService): AuthController {
 	return new AuthController(authService);
 }
 
-function createSimulationRepository(db: Connection): SimulationRepository {
-	return new SimulationRepository(db);
+function createSimulationKprRepository(
+	db: Connection
+): SimulationKprRepository {
+	return new SimulationKprRepository(db);
 }
 
-function createSimulationService(
-	repository: SimulationRepository
-): SimulationService {
-	return new SimulationService(repository);
+function createSimulationKprService(
+	repository: SimulationKprRepository
+): SimulationKprService {
+	return new SimulationKprService(repository);
 }
 
-function createSimulationController(
-	categoryService: SimulationService
-): SimulationController {
-	return new SimulationController(categoryService);
+function createSimulationKprController(
+	categoryService: SimulationKprService
+): SimulationKprController {
+	return new SimulationKprController(categoryService);
 }
 
 export {
 	// Repository
 	createAuthRepository,
-	createSimulationRepository,
+	createSimulationKprRepository,
 
 	// Service
 	createAuthService,
-	createSimulationService,
+	createSimulationKprService,
 
 	// Controller
 	createAuthController,
-	createSimulationController,
+	createSimulationKprController,
 };

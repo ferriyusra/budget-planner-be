@@ -1,27 +1,24 @@
 import response from '../../utils/response';
 import { Response } from 'express';
-import { IPaginationQuery, IReqUser } from '../../utils/interfaces';
-import { SimulationType } from '../simulation/models/simulation.model';
-import SimulationService from '../simulation/service';
-import { simulationKprDTO } from '../simulation/validation/simulationKprDTO';
+import { IReqUser } from '../../utils/interfaces';
+import { SimulationType } from '../simulation_kpr/models/simulation.model';
+import SimulationKprService from '../simulation_kpr/service';
+import { simulationKprDTO } from '../simulation_kpr/validation/simulationKprDTO';
 
-class SimulationController {
-	constructor(private readonly simulationService: SimulationService) {}
+class SimulationKprController {
+	private readonly simulationService: SimulationKprService;
+
+	constructor(simulationService: SimulationKprService) {
+		this.simulationService = simulationService;
+	}
 
 	async create(req: IReqUser, res: Response) {
 		try {
-			const { simulationType } = req.body;
 			if (!req.user?.id) {
 				return response.unauthorized(res, 'User not authenticated');
 			}
 
-			switch (simulationType) {
-				case SimulationType.KPR:
-					await simulationKprDTO.validate(req.body);
-					break;
-				default:
-					throw new Error('Unsupported simulation type');
-			}
+			await simulationKprDTO.validate(req.body);
 
 			const result = await this.simulationService.create({
 				data: req.body,
@@ -143,4 +140,4 @@ class SimulationController {
 	}
 }
 
-export default SimulationController;
+export default SimulationKprController;

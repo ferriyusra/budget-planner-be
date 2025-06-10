@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction, Router } from 'express';
 
 import AuthController from '../modules/controllers/auth.controller';
-import SimulationController from '../modules/controllers/simulation.controller';
+import SimulationKprController from '../modules/controllers/simulation_kpr.controller';
 
 import aclMiddleware from '../middlewares/acl.middleware';
 import authMiddleware from '../middlewares/auth.middleware';
@@ -12,15 +12,15 @@ import { IReqUser } from '../utils/interfaces';
 export class ApiRouter {
 	private router: Router;
 	private authController: AuthController;
-	private simulationController: SimulationController;
+	private simulationKprController: SimulationKprController;
 
 	constructor(
 		authController: AuthController,
-		simulationController: SimulationController
+		simulationKprController: SimulationKprController
 	) {
 		this.router = express.Router();
 		this.authController = authController;
-		this.simulationController = simulationController;
+		this.simulationKprController = simulationKprController;
 		this.initializeRoutes();
 	}
 
@@ -51,6 +51,7 @@ export class ApiRouter {
 			}
 			*/
 		);
+
 		this.router.get(
 			'/auth/me',
 			authMiddleware,
@@ -62,28 +63,28 @@ export class ApiRouter {
 			'/simulation',
 			[authMiddleware, aclMiddleware([ROLES.USER, ROLES.ADMIN])],
 			(req: Request, res: Response, _next: NextFunction) =>
-				this.simulationController.create(req, res)
+				this.simulationKprController.create(req, res)
 		);
 
 		this.router.get(
 			'/simulation',
 			[authMiddleware, aclMiddleware([ROLES.USER, ROLES.ADMIN])],
 			(req: Request, res: Response, _next: NextFunction) =>
-				this.simulationController.findAll(req, res)
+				this.simulationKprController.findAll(req, res)
 		);
 
 		this.router.get(
 			'/simulation/:id',
 			[authMiddleware, aclMiddleware([ROLES.USER, ROLES.ADMIN])],
 			(req: Request, res: Response, _next: NextFunction) =>
-				this.simulationController.findById(req, res)
+				this.simulationKprController.findById(req, res)
 		);
 
 		this.router.get(
 			'/simulation/:id/download',
 			[authMiddleware, aclMiddleware([ROLES.USER, ROLES.ADMIN])],
 			(req: Request, res: Response, _next: NextFunction) =>
-				this.simulationController.downloadExcel(req, res)
+				this.simulationKprController.downloadExcel(req, res)
 		);
 	}
 
@@ -94,7 +95,7 @@ export class ApiRouter {
 
 export default (
 	authController: AuthController,
-	simulationController: SimulationController
+	simulationKprController: SimulationKprController
 ): Router => {
-	return new ApiRouter(authController, simulationController).getRouter();
+	return new ApiRouter(authController, simulationKprController).getRouter();
 };

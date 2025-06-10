@@ -1,7 +1,7 @@
 import { Connection, Model } from 'mongoose';
 import SimulationModel, { Simulation } from './models/simulation.model';
 
-class SimulationRepository {
+class SimulationKprRepository {
 	private readonly simulationModel: Model<Simulation>;
 
 	constructor(db: Connection) {
@@ -61,4 +61,4 @@ class SimulationRepository {
 	}
 }
 
-export default SimulationRepository;
+export default SimulationKprRepository;

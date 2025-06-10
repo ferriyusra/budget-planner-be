@@ -12,15 +12,15 @@ import { APP_ENV, APP_NAME, APP_VERSION } from './utils/env';
 import {
 	// Controllers
 	createAuthController,
-	createSimulationController,
+	createSimulationKprController,
 
 	// Repository
 	createAuthRepository,
-	createSimulationRepository,
+	createSimulationKprRepository,
 
 	// Service
 	createAuthService,
-	createSimulationService,
+	createSimulationKprService,
 } from './modules';
 
 import apiRouter from './routes/api';
@@ -87,17 +87,20 @@ async function main() {
 	// Initialize dependencies
 	logger.info('Initializing dependencies');
 	const authRepository = createAuthRepository(db);
-	const simulationRepository = createSimulationRepository(db);
+	const simulationKprRepository = createSimulationKprRepository(db);
 
 	const authService = createAuthService(authRepository);
-	const simulationService = createSimulationService(simulationRepository);
+	const simulationKprService = createSimulationKprService(
+		simulationKprRepository
+	);
 
 	const authController = createAuthController(authService);
-	const simulationController = createSimulationController(simulationService);
+	const simulationKprController =
+		createSimulationKprController(simulationKprService);
 
 	// Initialize routes
 	logger.info('Initializing routes');
-	app.use('/api', apiRouter(authController, simulationController));
+	app.use('/api', apiRouter(authController, simulationKprController));
 
 	// Initialize API documentation
 	docs(app);
