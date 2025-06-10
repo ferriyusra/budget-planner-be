@@ -10,24 +10,20 @@ import logger from './utils/logger';
 import errorMiddleware from './middlewares/error.middleware';
 import { APP_ENV, APP_NAME, APP_VERSION } from './utils/env';
 import {
+	// Controllers
 	createAuthController,
+	createSimulationController,
+
+	// Repository
 	createAuthRepository,
+	createSimulationRepository,
+
+	// Service
 	createAuthService,
-	createCampaignController,
-	createCampaignRepository,
-	createCampaignService,
-	createCategoryController,
-	createCategoryRepository,
-	createCategoryService,
-	createDonationController,
-	createDonationRepository,
-	createDonationService,
-	createMediaController,
-	createMediaService,
+	createSimulationService,
 } from './modules';
 
 import apiRouter from './routes/api';
-import { CloudinaryUploader } from './utils/uploader';
 import http from 'http';
 
 // Initialize Express
@@ -91,45 +87,20 @@ async function main() {
 	// Initialize dependencies
 	logger.info('Initializing dependencies');
 	const authRepository = createAuthRepository(db);
-	const categoryRepository = createCategoryRepository(db);
-	const campaignRepository = createCampaignRepository(db);
-	const donationRepository = createDonationRepository(db);
+	const simulationRepository = createSimulationRepository(db);
 
 	const authService = createAuthService(authRepository);
-	const categoryService = createCategoryService(categoryRepository);
-	const campaignService = createCampaignService(campaignRepository);
-	const donationService = createDonationService(donationRepository);
-
-	const mediaService = createMediaService(new CloudinaryUploader());
+	const simulationService = createSimulationService(simulationRepository);
 
 	const authController = createAuthController(authService);
-	const categoryController = createCategoryController(categoryService);
-	const campaignController = createCampaignController(
-		campaignService,
-		mediaService
-	);
-	const donationController = createDonationController(
-		donationService,
-		campaignService
-	);
-	const mediaController = createMediaController(mediaService);
+	const simulationController = createSimulationController(simulationService);
 
 	// Initialize routes
 	logger.info('Initializing routes');
-	app.use(
-		'/api',
-		apiRouter(
-			authController,
-			categoryController,
-			campaignController,
-			donationController,
-			mediaController
-		)
-	);
+	app.use('/api', apiRouter(authController, simulationController));
 
 	// Initialize API documentation
-	// Uncomment the line below to enable API documentation
-	// docs(app);
+	docs(app);
 
 	app.get('/', (_req: Request, res: Response) => {
 		res.status(200).json({

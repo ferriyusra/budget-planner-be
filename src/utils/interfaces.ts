@@ -9,13 +9,7 @@ export interface IReqUser extends Request {
 export interface IUserToken
 	extends Omit<
 		User,
-		| 'password'
-		| 'activationCode'
-		| 'isActive'
-		| 'email'
-		| 'fullName'
-		| 'profilePicture'
-		| 'username'
+		'password' | 'email' | 'fullName' | 'profilePicture' | 'username'
 	> {
 	id?: Types.ObjectId;
 }

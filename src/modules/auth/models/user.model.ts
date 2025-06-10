@@ -1,10 +1,7 @@
 import mongoose from 'mongoose';
-
 import * as Yup from 'yup';
 import { ROLES } from '../../../utils/constant';
 import { encrypt } from '../../../utils/encryption';
-import { CLIENT_HOST, EMAIL_SMTP_USER } from '../../../utils/env';
-import { renderMailHtml, sendMail } from '../../../utils/mail/mail';
 
 const validatePassword = Yup.string()
 	.required()
@@ -55,8 +52,6 @@ export const userDTO = Yup.object({
 export type TypeUser = Yup.InferType<typeof userDTO>;
 
 export interface User extends Omit<TypeUser, 'confirmPassword'> {
-	isActive: boolean;
-	activationCode: string;
 	role: string;
 	profilePicture: string;
 	createdAt?: string;
@@ -86,19 +81,12 @@ const UserSchema = new Schema<User>(
 		},
 		role: {
 			type: Schema.Types.String,
-			enum: [ROLES.ADMIN, ROLES.FUNDRAISER],
-			default: ROLES.FUNDRAISER,
+			enum: [ROLES.ADMIN, ROLES.USER],
+			default: ROLES.USER,
 		},
 		profilePicture: {
 			type: Schema.Types.String,
 			default: 'user.jpg',
-		},
-		isActive: {
-			type: Schema.Types.Boolean,
-			default: true,
-		},
-		activationCode: {
-			type: Schema.Types.String,
 		},
 	},
 	{
@@ -109,38 +97,12 @@ const UserSchema = new Schema<User>(
 UserSchema.pre('save', function (next) {
 	const user = this;
 	user.password = encrypt(user.password);
-	user.activationCode = encrypt(user.id);
 	next();
 });
-
-// disabled send email because issue in pricing and limited in free tier
-// UserSchema.post('save', async function (doc, next) {
-// 	try {
-// 		const user = doc;
-// 		const contentMail = await renderMailHtml('registration-success.ejs', {
-// 			username: user.username,
-// 			fullName: user.fullName,
-// 			email: user.email,
-// 			createdAt: user.createdAt,
-// 			activationLink: `${CLIENT_HOST}/auth/activation?code=${user.activationCode}`,
-// 		});
-
-// 		await sendMail({
-// 			from: EMAIL_SMTP_USER,
-// 			to: user.email,
-// 			subject: 'Aktivasi Akun Anda',
-// 			html: contentMail,
-// 		});
-// 	} catch (error) {
-// 	} finally {
-// 		next();
-// 	}
-// });
 
 UserSchema.methods.toJSON = function () {
 	const user = this.toObject();
 	delete user.password;
-	delete user.activationCode;
 	return user;
 };
 

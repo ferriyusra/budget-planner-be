@@ -41,17 +41,9 @@ class AuthController {
 				password,
 			});
 
-			const userByIdentifier = await UserModel.findOne({
-				$or: [
-					{
-						email: identifier,
-					},
-					{
-						username: identifier,
-					},
-				],
-				isActive: true,
-			});
+			const userByIdentifier = await this.authService.userByIdentifier(
+				identifier
+			);
 
 			if (!userByIdentifier) {
 				return response.unauthorized(res, 'User not found');

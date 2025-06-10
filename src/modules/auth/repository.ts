@@ -4,7 +4,7 @@ import UserModel, { User } from './models/user.model';
 class AuthRepository {
 	private readonly userModel: Model<User>;
 
-	constructor(private readonly db: Connection) {
+	constructor(db: Connection) {
 		this.userModel = db.model<User>('User', UserModel.schema);
 	}
 
@@ -23,7 +23,6 @@ class AuthRepository {
 					username: identifier,
 				},
 			],
-			isActive: true,
 		});
 
 		return userByIdentifier;
