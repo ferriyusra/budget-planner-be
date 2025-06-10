@@ -15,8 +15,11 @@ class SimulationRepository {
 		return this.simulationModel.create({ title: data.title, ...data, userId });
 	}
 
-	async findById(id: string) {
-		return this.simulationModel.findById(id);
+	async findById(id: string, userId: string) {
+		return this.simulationModel.findOne({
+			_id: id,
+			userId,
+		});
 	}
 
 	async findAll(query: object, limit: number, page: number, search: string) {

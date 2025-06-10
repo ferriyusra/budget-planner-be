@@ -78,6 +78,13 @@ export class ApiRouter {
 			(req: Request, res: Response, _next: NextFunction) =>
 				this.simulationController.findById(req, res)
 		);
+
+		this.router.get(
+			'/simulation/:id/download',
+			[authMiddleware, aclMiddleware([ROLES.USER, ROLES.ADMIN])],
+			(req: Request, res: Response, _next: NextFunction) =>
+				this.simulationController.downloadExcel(req, res)
+		);
 	}
 
 	public getRouter(): Router {
