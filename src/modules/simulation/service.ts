@@ -31,6 +31,11 @@ class SimulationService {
 		const count = await this.simulationRepository.count(query);
 		return count;
 	}
+
+	async findById(id: string) {
+		const data = await this.simulationRepository.findById(id);
+		return data;
+	}
 }
 
 export default SimulationService;

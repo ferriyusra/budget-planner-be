@@ -67,6 +67,33 @@ class SimulationController {
 			return response.error(res, error, 'Failed get simulations');
 		}
 	}
+
+	async findById(req: IReqUser, res: Response) {
+		try {
+			const { id } = req.params;
+
+			if (!req.user?.id) {
+				return response.unauthorized(res, 'User not authenticated');
+			}
+
+			const simulation = await this.simulationService.findById(id);
+
+			if (!simulation) {
+				return response.notfound(res, 'Simulation not found');
+			}
+
+			if (simulation.userId.toString() !== req.user.id.toString()) {
+				return response.unauthorized(
+					res,
+					'You are not authorized to access this simulation'
+				);
+			}
+
+			return response.success(res, simulation, 'Success get simulation');
+		} catch (error) {
+			return response.error(res, error, 'Failed get simulation');
+		}
+	}
 }
 
 export default SimulationController;
